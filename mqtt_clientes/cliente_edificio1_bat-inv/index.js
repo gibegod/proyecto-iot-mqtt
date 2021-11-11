@@ -16,16 +16,17 @@ client.on('connect', function () {
   function mensaje() {
     console.log("publish!")
 
-    var voltaje = getRandomArbitrary(11.8, 12.8)
-    var corriente = getRandomArbitrary(15.0,25.0)
-    var potencia = getRandomArbitrary(10,30)
-    var energia = getRandomArbitrary(5,15)
-    var carga_bateria = getRandomArbitrary(20,100)
+
+    var voltaje = getRandomArbitrary(13, 19)
+    var corriente = getRandomArbitrary(140.0,150.0)
+    var potencia = voltaje * corriente
+    var energia = potencia
+    var carga_bateria = getRandomArbitrary(26,100)
 
     var json = `{"voltaje": ${voltaje},"corriente": ${corriente},"potencia": ${potencia},"energia": ${energia}, "carga_bateria": ${carga_bateria}}`
     
     console.log(json)
-    client.publish('EmpresaIoT/oficinas/bateria_inversor', json);
+    client.publish('EmpresaIoT/oficinas2/bateria_inversor', json);
     contador++;
     // if (contador >= 10) {
     //   clearInterval(intervalo);
