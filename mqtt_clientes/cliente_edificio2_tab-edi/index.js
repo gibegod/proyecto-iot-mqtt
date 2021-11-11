@@ -40,7 +40,7 @@ client.on('connect', function () {
 })
 
 function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
+  return (Math.random() * (max - min) + min).toFixed(2);
 }
 
 //{"voltaje": 12.5,"corriente": 10.2,"potencia": 25.5,"energia": 10.0, "temperatura": 35.0, "lux": 10 }
