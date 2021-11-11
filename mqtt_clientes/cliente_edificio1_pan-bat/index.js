@@ -1,43 +1,47 @@
 var mqtt = require('mqtt')
 
-var client = mqtt.connect('mqtt://test.mosquitto.org');
+var options = {
+  port: 1883,
+  username: 'username1',
+  password: 'username1'
+}
+
+var client = mqtt.connect('mqtt://broker.hivemq.com');
 
 client.on('connect', function () {
-
-  console.log("Conectado");
-
   var contador = 0;
   var intervalo;
+
+  console.log("Conectado!")
   function mensaje() {
-    client.publish('EmpresaIoT/edificio1/pan-bat', Math.random().toFixed(2).toString());
+    console.log("publish!")
+
+    var voltaje = getRandomArbitrary(0.0, 12.0)
+    var corriente = getRandomArbitrary(15.0,25.0)
+    var potencia = getRandomArbitrary(10,30)
+    var energia = getRandomArbitrary(5,15)
+    var temperatura = getRandomArbitrary(20,35)
+    var lux = getRandomArbitrary(0,15)
+
+    var json = `{"voltaje": ${voltaje},"corriente": ${corriente},"potencia": ${potencia},"energia": ${energia},"temperatura": ${temperatura}, "lux": ${lux}}`
+    
+    console.log(json)
+    client.publish('EmpresaIoT/oficinas/panel-bateria', json);
     contador++;
-    if (contador >= 10) {
-      clearInterval(intervalo);
-    }
+    // if (contador >= 10) {
+    //   clearInterval(intervalo);
+    // }
   }
   
   function intervalo() {
-    intervalo = setInterval(mensaje, 5000);
+    intervalo = setInterval(mensaje, 3000);
   }
 
   intervalo();
 })
 
-//SSL
-// var mqtt    = require('mqtt');
-// const fs = require('fs');
-// var caFile = fs.readFileSync("ca.crt");
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
 
-// var options={
-// clientId:"mqttjs01",
-// //port:8883,
-// //host:'192.168.1.71',
-// //protocol:'mqtts',
-// rejectUnauthorized : false,
-// ca:caFile 
-// }
-// var client  = mqtt.connect("mqtts://192.168.1.71:8883",options);
-// console.log("connected flag  " + client.connected);
-// client.on("connect",function(){	
-// console.log("connected  "+ client.connected);
-// })
+//{"voltaje": 12.5,"corriente": 10.2,"potencia": 25.5,"energia": 10.0, "temperatura": 35.0, "lux": 10 }
